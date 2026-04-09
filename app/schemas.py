@@ -1,6 +1,7 @@
 """
 Pydantic schemas for request validation and response serialization.
 """
+
 from datetime import datetime
 from typing import Optional, List
 from pydantic import BaseModel, Field
@@ -9,6 +10,7 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 # Inbound payload (from ESP device)
 # ---------------------------------------------------------------------------
+
 
 class SensorPayload(BaseModel):
     moisture_percent: float = Field(..., ge=0, le=100)
@@ -39,15 +41,17 @@ class ContextPayload(BaseModel):
 
 class IrrigationRequest(BaseModel):
     """Main POST body sent by the ESP device / gateway."""
+
     sensor: SensorPayload
     weather: Optional[WeatherPayload] = None
     context: ContextPayload
-    plant_id: Optional[int] = None   # if set, uses stored plant profile
+    plant_id: Optional[int] = None  # if set, uses stored plant profile
 
 
 # ---------------------------------------------------------------------------
 # AI outputs
 # ---------------------------------------------------------------------------
+
 
 class PredictionOut(BaseModel):
     predicted_moisture_1h: float
@@ -93,19 +97,19 @@ class ClassificationOut(BaseModel):
 # Full API response
 # ---------------------------------------------------------------------------
 
+
 class IrrigationResponse(BaseModel):
-    reading_id: int
-    classification: ClassificationOut
-    prediction: PredictionOut
-    anomalies: List[AnomalyOut]
-    decision: IrrigationDecisionOut
-    insights: List[str]           # human-readable bullet points
-    recorded_at: datetime
+    pump: str
+    reason: str
+
+    class Config:
+        from_attributes = True
 
 
 # ---------------------------------------------------------------------------
 # Plant profile CRUD
 # ---------------------------------------------------------------------------
+
 
 class PlantProfileCreate(BaseModel):
     name: str
@@ -132,6 +136,7 @@ class PlantProfileOut(PlantProfileCreate):
 # ---------------------------------------------------------------------------
 # Historical data queries
 # ---------------------------------------------------------------------------
+
 
 class ReadingOut(BaseModel):
     id: int

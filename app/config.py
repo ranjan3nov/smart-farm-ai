@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     API_HOST: str = "0.0.0.0"
     API_PORT: int = 8000
     DEBUG: bool = True
+    API_KEY: str = ""
 
     # Anomaly thresholds
     MOISTURE_SPIKE_THRESHOLD: float = 20.0
