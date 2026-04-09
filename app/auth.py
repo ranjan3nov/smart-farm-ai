@@ -10,7 +10,7 @@ from app.config import settings
 API_KEY_HEADER = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
-async def verify_api_key(request: Request, api_key: str = API_KEY_HEADER):
+async def verify_api_key(request: Request, api_key: str | None = API_KEY_HEADER):
     """
     Verify the API key from the request header.
     """
